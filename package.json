@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "concurrently \"yarn backend:server\" \"yarn frontend:server:dev\"",
-		"frontend:server:dev": "yarn workspace client start:dev",
+		"frontend:server:dev": "yarn workspace client new_start",
 		"backend:server": "yarn workspace server start",
 		"build": "yarn workspace client build",
 		"start": "yarn build && yarn backend:server"
