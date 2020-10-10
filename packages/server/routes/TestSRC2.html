@@ -1,0 +1,234 @@
+
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="https://test-gateway.mastercard.com/static/srci/1.2.0/srci.min.js"></script>
+</head>
+<body>
+
+    <div>
+        <div >
+           <h3>Pay To offset your carbon emmision</h3>   
+       </div>
+
+
+        <div class="col-md-12 mb-3">
+            <label for="srci-origin">Click 2 Pay Host Url</label>
+            <input id="srci-origin" type="text" name="origin" class="browser-default form-control" required="">
+        </div>
+
+
+
+        <div class="col-md-12 mb-3">
+            <label for="srci-merchant-id">Store ID</label>
+            <input id="srci-merchant-id" type="text" name="merchantId" class="browser-default form-control" required="">
+        </div>
+
+
+
+        
+
+
+
+        <div class="col-md-12 mb-3">
+            <label for="srci-order-currency">Order Currency</label>
+            <input id="srci-order-currency" type="text" name="orderCurrency" class="browser-default form-control" required="">
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label for="srci-order-currency">You currently need to plant 235 trees to offset your carbon footprint. How many do you wish to plant</label>
+            <input id="srci-order-currency" type="text" name="no_trees" class="browser-default form-control" required="">
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label for="srci-order-amount">Order Amount</label>
+            <input id="srci-order-amount" type="text" name="orderAmount" class="browser-default form-control" required="">
+        </div>
+
+
+
+        <div class="col-md-12 mb-3">
+            <button id="configure-srci-params" class="btn btn-primary btn-lg btn-block" type="submit" onclick="configureClick2Pay()">
+                Configure Click 2 Pay
+            </button>
+        </div>
+                
+        <div class="se-pre-con"></div>
+        <div id="srciContainer"></div>    
+    </div>
+
+    <div id="launchSRCi" style="display: initial;">
+        <button class="mt-4 btn" onclick="launchSRCi()"><img src="https://src.mastercard.com/assets/img/btn/src_chk_btn_126x030px.svg?locale=en_us&paymentmethod=master,visa,amex&checkoutid=SRCCHIPPAY"/></button>
+    </div>
+
+    <div class="col-md-12 mb-3">
+            <p id='tests' dis></p>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    var apiVersion = 58;
+    var apiPassword = 'fdb93d5ccb8a0249d01182fa760a5cc7';
+    var srciVersion = '1.2.0';
+    var customerEmail = '';
+    var interactionLocale = 'en_US';
+    var interactionCountry = 'USA';
+    var collectShippingAddress = '';
+    var inlineCardListWidth = '';
+    var inlineCardListHeight = '';
+    var SRC_MIN_SUPPORTED_API_VERSION = 53;
+    var merchantUrl = 'https://google.com';
+    var merchantName = 'Hackathon_Merchant';
+    var dpaTransactionOptionsList = 'DPA Transaction Options \n';
+
+    var sessionId = 'SESSION0002033844281G8520372N81';
+
+    var hostUrl, merchantId, orderAmount, orderCurrency
+    var _correlationId, _networkScheme, paymentOptionsInquiryResponse, merchantParams;
+
+    var configureClick2Pay = function () {
+        hostUrl = document.getElementById("srci-origin").value;
+        merchantId = document.getElementById("srci-merchant-id").value;
+        orderAmount = document.getElementById("srci-order-amount").value;
+        orderCurrency = document.getElementById("srci-order-currency").value;
+        SRCi.configure(merchantId, merchantName, merchantUrl, sessionId, { wsVersion:apiVersion }, srciConfigCallback);
+    };
+    
+    var configureErrorCallback = function (error) {
+        addLog('srci-configure-error-callback', 'Error configuring SRCi ' + error, false);
+    };
+
+    var launchSRCiErrorCallback = function (error) {
+        addLog('srci-error-callback', 'Error checking out using ' + error.explanation, false);
+    };
+
+    var cancelCallback = function () {
+        addLog('srci-cancel-callback', 'User cancelled the checkout operation', false);
+    };
+
+    var payloadCallback = function (correlationId, networkScheme) {
+        addLog('srci-payload-callback', 'User successfully selected the card', true);
+        addLog('srci-correlation-id', 'Correlation ID: ' + correlationId, true);
+        addLog('srci-scheme', 'Scheme: ' + networkScheme, true);
+        addLog('srci-dpa-transaction-options', dpaTransactionOptionsListGenerator(window.ITB_UI_SDK_SETTINGS.parameters.dpaTransactionOptions), true);
+        addLog('srci-language', 'Language: ' + window.ITB_UI_SDK_SETTINGS.parameters.language, true);
+
+        hide($('#launchSRCi'));
+        hide($('#loadSRCInline'));
+        hide($('#srciEmbedded'));
+    };
+
+    var srciConfigCallback = function (resp) {
+        var response = resp.restApiResponse;
+
+        if (response.result === "ERROR") {
+            configureErrorCallback(response);
+        } else if (response.result === "SUCCESS") {
+            addLog('srci-configure-success', 'SRCi was configured successfully', true);
+            show($('#launchSRCi'));
+            paymentOptionsInquiryResponse = response;
+        }
+    };
+
+    addLog('srci-configure', 'Starting SRCi configuration', true);
+
+    
+
+    function launchSRCi() {
+        var config = buildConfig();
+
+        addLog('srci-launch', 'Launching SRC ITB', true);
+        SRCi.launchUI(config, payloadCallback, launchSRCiErrorCallback, cancelCallback);
+    }
+
+    function loadSrcInlineCardList() {
+        var config = buildConfig();
+
+        config.inlineCardListWidth = inlineCardListWidth;
+        config.inlineCardListHeight = inlineCardListHeight;
+
+        addLog('srci-load', 'Loading SRC Inline Cards', true);
+        SRCi.launchUI(config, payloadCallback, launchSRCiErrorCallback, cancelCallback);
+    }
+
+    function buildConfig() {
+        var config = {
+            customerEmail: customerEmail,
+            interactionLocale: interactionLocale,
+            interactionCountry: interactionCountry
+        };
+
+        // Adding retrocompatibility for transactionAmount, transactionCurrency and collectShippingAddress on srci v.1.1.0
+        if (srciVersion === '1.1.0') {
+            config.transactionAmount = orderAmount;
+            config.transactionCurrency = orderCurrency;
+            config.dpaShippingPreference = collectShippingAddress === 'TRUE';
+        } else {
+            config.orderAmount = orderAmount;
+            config.orderCurrency = orderCurrency;
+            config.collectShippingAddress = collectShippingAddress === 'TRUE';
+        }
+
+        return config;
+    }
+
+    function dpaTransactionOptionsListGenerator(obj) {
+        for (var prop in obj) {
+            if (typeof obj[prop] !== 'object' || Array.isArray(obj[prop])) {
+                dpaTransactionOptionsList += '\t• ' + prop + ': ' + obj[prop] + '\n';
+            } else {
+                dpaTransactionOptionsListGenerator(obj[prop])
+            }
+        }
+        return dpaTransactionOptionsList;
+    }
+
+    function addLog(id, message, isSuccessful) {
+        var logItem = document.getElementById(id);
+        if (logItem) {
+            logItem.parentElement.removeChild(logItem);
+        }
+        var log = document.createElement("LI");
+        log.classList.add('list-group-item');
+        log.classList.add(isSuccessful ? 'list-group-item-success' : 'list-group-item-danger');
+        log.id = id;
+        log.innerText = message;
+        // activitiesLog.appendChild(log);
+    }
+
+    function show(el) {
+        // var elem = document.getElementById('el')
+        el.style.display = 'initial';
+    }
+
+    function hide(el) {
+        el.style.display = 'none';
+    }
+
+    function addClass(el, newClass) {
+        el.classList.add(newClass);
+    }
+
+    function addHtml(el, html) {
+        el.innerHTML = html;
+    }
+
+    function addText(el, text) {
+        el.innerText = text;
+    }
+
+    function addAttribute(el, attrName, attrValue) {
+        el.setAttribute(attrName, attrValue);
+    }
+
+    function removeAttribute(el, attrName) {
+        el.removeAttribute(attrName);
+    }
+</script>
+</body>
+</html>
