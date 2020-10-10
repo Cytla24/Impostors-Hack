@@ -23,7 +23,7 @@ router.get("/getPaths", async (req, res, next) => {
 	await axios
 		.get(url)
 		.then(({ data }) => {
-			driving_time = data.rows[0].elements[0].duration.text;
+			driving_time = data.rows[0].elements[0].duration.text || null;
 			origin_ad = data.origin_addresses[0];
 			destination_ad = data.destination_addresses[0];
 			distance = data.rows[0].elements[0].distance.text;
@@ -35,7 +35,6 @@ router.get("/getPaths", async (req, res, next) => {
 	await axios
 		.get(url)
 		.then(({ data }) => {
-			console.log(data);
 			rail_time = data.rows[0].elements[0].duration.text;
 		})
 		.catch((error) => console.log(error));
