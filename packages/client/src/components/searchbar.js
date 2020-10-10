@@ -1,6 +1,15 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { TextField, Button } from "@material-ui/core";
+import {
+	TextField,
+	Button,
+	AppBar,
+	Toolbar,
+	Typography,
+	IconButton,
+	Badge,
+} from "@material-ui/core";
+import NotificationsIcon from "@material-ui/icons/Notifications";
 import axios from "axios";
 import { Cards } from "./cards";
 import "../index.css";
@@ -29,6 +38,27 @@ class SearchBarInner extends React.Component {
 		const { cardsData, searched } = this.state;
 		return (
 			<div>
+				<AppBar
+					position="absolute"
+					// className={clsx(classes.appBar, open && classes.appBarShift)}
+				>
+					<Toolbar className={classes.toolbar}>
+						<Typography
+							component="h1"
+							variant="h6"
+							color="inherit"
+							noWrap
+							className={classes.title}
+						>
+							Dashboard
+						</Typography>
+						<IconButton color="inherit">
+							<Badge badgeContent={4} color="secondary">
+								<NotificationsIcon />
+							</Badge>
+						</IconButton>
+					</Toolbar>
+				</AppBar>
 				<div className={searched ? "container-up" : "container"}>
 					{/* <h1>Hey!</h1> */}
 					<form
