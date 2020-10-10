@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 import axios from "axios";
 import { Cards } from "./cards";
+import "../index.css";
 
 const useStyles = (theme) => ({
 	root: {
@@ -16,16 +17,55 @@ const useStyles = (theme) => ({
 class SearchBarInner extends React.Component {
 	constructor() {
 		super();
-		this.state = { origin: "", dest: "", cardsData: [] };
+		this.state = { origin: "", dest: "", cardsData: [], searched: false };
 
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleReset = this.handleReset.bind(this);
 	}
 
+	render() {
+		const { classes } = this.props;
+		const { cardsData, searched } = this.state;
+		return (
+			<div>
+				<div className={searched ? "container-up" : "container"}>
+					{/* <h1>Hey!</h1> */}
+					<form
+						className={classes.root}
+						onReset={this.handleReset}
+						onSubmit={this.handleSubmit}
+						noValidate
+						autoComplete="off"
+					>
+						<TextField
+							id="origin"
+							label="Origin"
+							value={this.state.origin}
+							onChange={this.handleChange}
+						/>
+						<TextField
+							id="dest"
+							label="Destination"
+							value={this.state.dest}
+							onChange={this.handleChange}
+						/>
+						<div>{this.renderButtons()}</div>
+					</form>
+				</div>
+				{cardsData[0] ? (
+					<Cards cardsData={cardsData} />
+				) : (
+					<p>No results found</p>
+				)}
+			</div>
+		);
+	}
+
 	async handleSubmit(event) {
 		event.preventDefault();
 		const url = "/getPaths";
+		await this.setState({ searched: true });
 		const response = await axios
 			.get(`${url}`, {
 				params: {
@@ -85,7 +125,7 @@ class SearchBarInner extends React.Component {
 	}
 
 	handleReset() {
-		this.setState({ origin: "", dest: "" });
+		this.setState({ origin: "", dest: "", searched: false });
 	}
 
 	renderButtons = () => {
@@ -99,35 +139,6 @@ class SearchBarInner extends React.Component {
 		];
 		return buttons;
 	};
-
-	render() {
-		const { classes } = this.props;
-		const { cardsData } = this.state;
-		return (
-			<form
-				className={classes.root}
-				onReset={this.handleReset}
-				onSubmit={this.handleSubmit}
-				noValidate
-				autoComplete="off"
-			>
-				<TextField
-					id="origin"
-					label="Origin"
-					value={this.state.origin}
-					onChange={this.handleChange}
-				/>
-				<TextField
-					id="dest"
-					label="Destination"
-					value={this.state.dest}
-					onChange={this.handleChange}
-				/>
-				{this.renderButtons()}
-				<Cards cardsData={cardsData} />
-			</form>
-		);
-	}
 }
 
 export const SearchBar = withStyles(useStyles)(SearchBarInner);
