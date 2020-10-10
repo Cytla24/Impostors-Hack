@@ -92,8 +92,9 @@ class FoodFootPrintInner extends React.Component {
 		return (
 			<div>
 			<Gallery imageUrls={urls} />
+			<h1 style={{marginLeft: '300px',marginTop:'60px'}} > Feature demos the use of the cloud vision Api.<br/> Can you guess which food is being identified?<br/>Save the Planet.<br/> Offset your footprint. </h1>
 			<Button key="submit-button" type="button" onClick={this.handleSubmit}
-			style={{display: 'inline-block',marginLeft: '300px',marginTop:'60px'}}
+			style={{display: 'inline-block',marginLeft: '300px',marginTop:'5px'}}
 			>
 				Show Carbon Footprint
 			</Button>
