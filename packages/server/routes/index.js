@@ -20,19 +20,25 @@ router.get("/getPaths", async (req, res, next) => {
 	// Examples of origin = "Boston,MA" or "Concord,MA"
 	const API_KEY = "AIzaSyA7ly7P0GNHtWO-wfAR5DWrsE8qDyb_OgA";
 	var url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin}&destinations=${destination}&key=${API_KEY}`;
-	await axios.get(url).then(({ data }) => {
-		driving_time = data.rows[0].elements[0].duration.text;
-		origin_ad = data.origin_addresses[0];
-		destination_ad = data.destination_addresses[0];
-		distance = data.rows[0].elements[0].distance.text;
-		distance_val = data.rows[0].elements[0].distance.value;
-	});
+	await axios
+		.get(url)
+		.then(({ data }) => {
+			driving_time = data.rows[0].elements[0].duration.text;
+			origin_ad = data.origin_addresses[0];
+			destination_ad = data.destination_addresses[0];
+			distance = data.rows[0].elements[0].distance.text;
+			distance_val = data.rows[0].elements[0].distance.value;
+		})
+		.catch((error) => console.log(error));
 
 	url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin}&destinations=${destination}&mode=transit&transmit_mode=rail&key=${API_KEY}`;
-	await axios.get(url).then(({ data }) => {
-		console.log(data);
-		rail_time = data.rows[0].elements[0].duration.text;
-	});
+	await axios
+		.get(url)
+		.then(({ data }) => {
+			console.log(data);
+			rail_time = data.rows[0].elements[0].duration.text;
+		})
+		.catch((error) => console.log(error));
 
 	const mtomilesConv = 1609.344;
 	const distance_val_mil = distance_val / mtomilesConv;
