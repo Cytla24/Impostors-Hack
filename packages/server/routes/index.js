@@ -2,6 +2,7 @@ var axios = require("axios");
 var express = require("express");
 var unirest = require("unirest");
 var router = express.Router();
+var csv = require('./jquery.csv.js');
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
@@ -176,18 +177,32 @@ router.get("/getNearestCity", async (req, res, next) => {
 	var search_query = nearest_airport_name + " code wikipedia";
 	// airport_API_KEY = "c7d0ba4e31";
 	var search_engine_ID = "9e88c5cc7164df494";
+	
+	// FIND iaat from name by searching csv file
+	// TEST
 
-	// https://www.googleapis.com/customsearch/v1?key=AIzaSyA7ly7P0GNHtWO-wfAR5DWrsE8qDyb_OgA&cx=9e88c5cc7164df494&q=John F. Kennedy International Airport code
-	url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${search_engine_ID}&q=${search_query}`;
+	var airportObj = $.csv.toObjects(csv);
 
-	await axios
-		.get(url)
-		.then(({ data }) => {
-			res.json(data);
-			airport_iaat = data.items[0].pagemap.hcard[0].nickname;
-			console.log(airport_iaat, "hi ");
-		})
-		.catch((error) => console.log(error));
+	for (var airport of airportObj){
+		var isSame = nearest_airport_name.localeCompare(airport.name);
+		if (isSame){
+			airport_iaat = airport.iaat;
+		}
+	}
+
+
+
+	// // https://www.googleapis.com/customsearch/v1?key=AIzaSyA7ly7P0GNHtWO-wfAR5DWrsE8qDyb_OgA&cx=9e88c5cc7164df494&q=John F. Kennedy International Airport code
+	// url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${search_engine_ID}&q=${search_query}`;
+
+	// await axios
+	// 	.get(url)
+	// 	.then(({ data }) => {
+	// 		res.json(data);
+	// 		airport_iaat = data.items[0].pagemap.hcard[0].nickname;
+	// 		console.log(airport_iaat, "hi ");
+	// 	})
+	// 	.catch((error) => console.log(error));
 
 	const return_val = {
 		airport_iaat: airport_iaat,

@@ -26,6 +26,7 @@
 		"debug": "~2.6.9",
 		"express": "^4.16.4",
 		"http-errors": "~1.6.2",
+		"jquery-csv": "^1.0.11",
 		"morgan": "~1.9.0",
 		"nodemon": "1.18.11",
 		"pug": "2.0.3",
