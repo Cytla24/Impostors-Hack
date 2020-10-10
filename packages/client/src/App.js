@@ -4,14 +4,15 @@ import { FoodFootPrint } from "./components/foodFootprint";
 import Flights from "./Flights";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ResponsiveDrawer from "./components/sidebar";
+import Dashboard from "./components/dashboard"
 
 class App extends Component {
 	render() {
 		return (
 			<div>
-			<ResponsiveDrawer/>
 			<Router>
 				<Switch>
+					<Route path="/dashboard" exact component={Dashboard} />
 					<Route path="/plantrips" exact component={SearchBar} />
 					<Route
 						path="/flights/:origin/:destination"
