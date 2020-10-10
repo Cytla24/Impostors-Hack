@@ -4,7 +4,7 @@ import { MyCard as Card } from "./card";
 export class Cards extends React.Component {
 	render() {
 		const { cardsData } = this.props;
-		return cardsData.map(({ origin, destination, mode, time }) => {
+		return cardsData.map(({ origin, destination, mode, time, cf }) => {
 			return (
 				<Card
 					key={`${origin}-${destination}-${mode}`}
@@ -12,6 +12,7 @@ export class Cards extends React.Component {
 					destination={destination}
 					mode={mode}
 					time={time}
+					cf={cf}
 				/>
 			);
 		});
