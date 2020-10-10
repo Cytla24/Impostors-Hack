@@ -21,7 +21,7 @@
 		"cross-env": "^7.0.2",
 		"@material-ui/icons": "^4.9.1",
 		"material-ui": "^0.20.2",
-		"moongoose": "^5.9.23"
+		"mongoose": "^5.9.23"
 	},
 	"devDependencies": {},
 	"proxy": "http://localhost:9000"

@@ -80,6 +80,7 @@ class SearchBarInner extends React.Component {
 							value={this.state.dest}
 							onChange={this.handleChange}
 						/>
+						<p>Example: Boston, California</p>
 						<div>{this.renderButtons()}</div>
 					</form>
 				</div>
@@ -106,6 +107,7 @@ class SearchBarInner extends React.Component {
 			.catch((error) => {
 				alert(`something went wrong :(`);
 				console.log(error);
+				return;
 			});
 		if (response.status === 200) {
 			const {
