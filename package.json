@@ -6,7 +6,7 @@
 		"dev": "concurrently \"yarn backend:server\" \"yarn frontend:server:dev\" \"yarn mastercard\"",
 		"frontend:server:dev": "yarn workspace client new_start",
 		"backend:server": "yarn workspace server start",
-		"mastercard": "npm run --prefix packages/mastercard start",
+		"mastercard": "cross-env CURRENCY_LABEL=usd npm run --prefix packages/mastercard start",
 		"build": "yarn workspace client build",
 		"start": "yarn build && yarn backend:server"
 	},
@@ -15,9 +15,10 @@
 	],
 	"dependencies": {
 		"@googlemaps/google-maps-services-js": "^3.1.13",
+		"@material-ui/core": "^4.11.0",
 		"axios": "^0.19.2",
 		"concurrently": "4.1.0",
-		"@material-ui/core": "^4.11.0"
+		"cross-env": "^7.0.2"
 	},
 	"devDependencies": {},
 	"proxy": "http://localhost:9000"

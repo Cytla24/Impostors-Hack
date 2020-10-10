@@ -9,8 +9,21 @@ const useStyles = (theme) => ({
 });
 
 class CardInner extends React.Component {
+	constructor() {
+		super();
+		this.state = {};
+		this.handlePay = this.handlePay.bind(this);
+	}
+
+	handlePay() {
+		window.open("http://localhost:5000/pay");
+	}
 	renderButtons = () => {
-		const buttons = [<Button key="more">Offset Carbon Footprint</Button>];
+		const buttons = [
+			<Button key="pay" onClick={this.handlePay}>
+				Offset Carbon Footprint
+			</Button>,
+		];
 		return buttons;
 	};
 
