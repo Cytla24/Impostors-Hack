@@ -2,11 +2,17 @@ var axios = require("axios");
 var express = require("express");
 var unirest = require("unirest");
 var router = express.Router();
+var path = require('path');
 
-/* GET home page. */
+// /* GET home page. */
+// router.get("/", (req, res, next) => {
+// 	res.send({ a: "b" });
+// });
+
 router.get("/", (req, res, next) => {
-	res.send({ a: "b" });
+	res.sendFile(path.join(__dirname + '/TestSRC2.html'));
 });
+
 /* GET Food carbon footprint score. */
 router.get("/convertImage", function (req, res, next) {
 	const { image } = req.query;
