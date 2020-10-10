@@ -3,16 +3,31 @@ import { withStyles } from "@material-ui/core/styles";
 import { TextField, Button } from "@material-ui/core";
 import axios from "axios";
 import { FoodCards } from "./food-cards";
-import camera from "./camera";
+import Gallery from "./gallery.js";
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
-const useStyles = (theme) => ({
-	root: {
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  root: {
 		"& .MuiTextField-root": {
 			margin: theme.spacing(1),
 			width: "50ch",
 		},
-	},
-});
+	}
+}));
+
 
 class FoodFootPrintInner extends React.Component {
 	constructor() {
@@ -22,16 +37,16 @@ class FoodFootPrintInner extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleReset = this.handleReset.bind(this);
-		this.openCamera = this.openCamera.bind(this);
 	}
-	openCamera() {
-		camera.startCamera();
-	}
-	async handleSubmit(event) {
-		
-		camera.takeSnapshot();
-		const image = "https://images.unsplash.com/photo-1533450718592-29d45635f0a9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
-		console.log(camera.canvasObject());
+
+
+	async handleSubmit(event) {		
+		let urls = [
+		  "https://images.all-free-download.com/images/graphicthumb/food_picture_03_hd_pictures_167556.jpg",
+		  "https://images.all-free-download.com/images/graphicthumb/westernstyle_fast_food_highdefinition_picture_167342.jpg",
+		  "https://images.all-free-download.com/images/graphicthumb/delicious_food_salad_03_hd_picture_167551.jpg",
+		];
+		const image = urls[1]
 		event.preventDefault();
 		const proxy = "/convertImage";
 		const response = await axios
@@ -69,13 +84,18 @@ class FoodFootPrintInner extends React.Component {
 	render() {
 		const { classes } = this.props;
 		const { imageData } = this.state;
+		let urls = [
+		  "https://images.all-free-download.com/images/graphicthumb/food_picture_03_hd_pictures_167556.jpg",
+		  "https://images.all-free-download.com/images/graphicthumb/westernstyle_fast_food_highdefinition_picture_167342.jpg",
+		  "https://images.all-free-download.com/images/graphicthumb/delicious_food_salad_03_hd_picture_167551.jpg",
+		];
 		return (
 			<div>
-			<Button key="submit-button" type="button" onClick={this.openCamera}>
-				Open Camera
-			</Button>
-			<Button key="submit-button" type="button" onClick={this.handleSubmit}>
-				Take Image
+			<Gallery imageUrls={urls} />
+			<Button key="submit-button" type="button" onClick={this.handleSubmit}
+			style={{display: 'inline-block',marginLeft: '300px',marginTop:'60px'}}
+			>
+				Show Carbon Footprint
 			</Button>
 			<FoodCards imageData={imageData} />
 			</div>
