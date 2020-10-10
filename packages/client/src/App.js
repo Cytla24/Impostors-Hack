@@ -15,8 +15,6 @@ class App extends Component {
 						component={Flights}
 					/>
 				</Switch>
-				{/* <SearchBar /> */}
-				{/* <Flights /> */}
 			</Router>
 		);
 	}

@@ -85,7 +85,7 @@ class SearchBarInner extends React.Component {
 	}
 
 	handleReset() {
-		this.setState({ value: "" });
+		this.setState({ origin: "", dest: "" });
 	}
 
 	renderButtons = () => {
