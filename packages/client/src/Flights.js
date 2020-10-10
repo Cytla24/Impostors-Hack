@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { FlightCard } from "./components/flightCard";
+import { Grid } from "@material-ui/core";
 
 class Flights extends Component {
 	constructor(props) {
@@ -35,7 +36,7 @@ class Flights extends Component {
 		return (
 			<div>
 				<h1>Flights</h1>
-				{this.renderCards()}
+				<Grid container>{this.renderCards()}</Grid>
 			</div>
 		);
 	}

@@ -10,71 +10,75 @@ router.get("/", (req, res, next) => {
 /* GET Food carbon footprint score. */
 router.get("/convertImage", function (req, res, next) {
 	const { image } = req.query;
-	var req = unirest("POST", "https://microsoft-computer-vision3.p.rapidapi.com/tag");
+	var req = unirest(
+		"POST",
+		"https://microsoft-computer-vision3.p.rapidapi.com/tag"
+	);
 
 	req.query({
-		"language": "en"
+		language: "en",
 	});
 
 	req.headers({
 		"x-rapidapi-host": "microsoft-computer-vision3.p.rapidapi.com",
 		"x-rapidapi-key": "c6747c3e79msh7a29b84d7d64199p105efdjsnd26af7a67b01",
 		"content-type": "application/json",
-		"accept": "application/json",
-		"useQueryString": true
+		accept: "application/json",
+		useQueryString: true,
 	});
 
 	req.type("json");
 	req.send({
-		"url": `${image}`
+		url: `${image}`,
 	});
 	req.end(function (response) {
 		if (response.error) throw new Error(response.error);
-		
+
 		var image_details_classes = response.body;
-		var image_details = image_details_classes["tags"]
+		var image_details = image_details_classes["tags"];
 		var food_dict = {
-			"pork": 1612,
-			"poultry": 2122,
-			"beef": 1212,
-			"lamb": 260,
-			"goat": 260,
-			"fish": 1729,
-			"eggs": 816,
-			"milk": 1277,
-			"cheese": 1277,
-			"wheat": 7155,
-			"rice": 2938,
-			"soybeans": 86,
-			"nuts": 414,
-			"fries": 122,
-			"potato": 101,
-			"oatmeal": 131,
-			"animal": 500,
-			"food": 300,
-			"plant": 250,
-			"bread": 400,
-			"cereal": 1000,
-			"fruit": 230
-		}
-		var top_five_image_names = []
-		var top_five_image_carbon = 0
+			pork: 1612,
+			poultry: 2122,
+			beef: 1212,
+			lamb: 260,
+			goat: 260,
+			fish: 1729,
+			eggs: 816,
+			milk: 1277,
+			cheese: 1277,
+			wheat: 7155,
+			rice: 2938,
+			soybeans: 86,
+			nuts: 414,
+			fries: 122,
+			potato: 101,
+			oatmeal: 131,
+			animal: 500,
+			food: 300,
+			plant: 250,
+			bread: 400,
+			cereal: 1000,
+			fruit: 230,
+		};
+		var top_five_image_names = [];
+		var top_five_image_carbon = 0;
 		for (i = 0; i < 5; i++) {
-		  if (image_details[i]["name"].toLowerCase() in food_dict) {
-		  	top_five_image_carbon = top_five_image_carbon + food_dict[image_details[i]["name"]];
-		    top_five_image_names.push(image_details[i]["name"])
-		  } else {
-		  	top_five_image_carbon = top_five_image_carbon + 15;
-		  	top_five_image_names.push(image_details[i]["name"])
-		  }
-		 
+			if (image_details[i]["name"].toLowerCase() in food_dict) {
+				top_five_image_carbon =
+					top_five_image_carbon + food_dict[image_details[i]["name"]];
+				top_five_image_names.push(image_details[i]["name"]);
+			} else {
+				top_five_image_carbon = top_five_image_carbon + 15;
+				top_five_image_names.push(image_details[i]["name"]);
+			}
 		}
-		
-		var returnJson = {"Names":top_five_image_names,"Carbon_footprint":top_five_image_carbon/5}
+
+		var returnJson = {
+			Names: top_five_image_names,
+			Carbon_footprint: top_five_image_carbon / 5,
+		};
 		res.json(returnJson);
-
 	});
-
 });
 
 router.get("/getPaths", async (req, res, next) => {
@@ -137,7 +141,59 @@ router.get("/getPaths", async (req, res, next) => {
 	res.json(returnVal);
 });
 
+router.get("/getNearestCity", async (req, res, next) => {
+	const API_KEY = "AIzaSyA7ly7P0GNHtWO-wfAR5DWrsE8qDyb_OgA";
+
+	const { city } = req.query;
+
+	var nearest_airport, longitude, latitude;
+
+	// https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
+	var url = `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${API_KEY}`;
+
+	await axios
+		.get(url)
+		.then(({ data }) => {
+			// res.json(data);
+			latitude = data.results[0].geometry.location.lat;
+			longitude = data.results[0].geometry.location.lng;
+		})
+		.catch((error) => console.log(error));
+
+	// https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.712784,-74.005941&rankby=distance&type=airport&key=AIzaSyA7ly7P0GNHtWO-wfAR5DWrsE8qDyb_OgA
+	url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=50000&type=airport&key=${API_KEY}`;
+
+	await axios
+		.get(url)
+		.then(({ data }) => {
+			// res.json(data);
+			nearest_airport_name = data.results[0].name;
+			console.log(nearest_airport_name);
+			// address_components[3].long_name;
+		})
+		.catch((error) => console.log(error));
+
+	var search_query = nearest_airport_name + " code wikipedia";
+	// airport_API_KEY = "c7d0ba4e31";
+	var search_engine_ID = "9e88c5cc7164df494";
+
+	// https://www.googleapis.com/customsearch/v1?key=AIzaSyA7ly7P0GNHtWO-wfAR5DWrsE8qDyb_OgA&cx=9e88c5cc7164df494&q=John F. Kennedy International Airport code
+	url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${search_engine_ID}&q=${search_query}`;
+
+	await axios
+		.get(url)
+		.then(({ data }) => {
+			res.json(data);
+			airport_iaat = data.items[0].pagemap.hcard[0].nickname;
+			console.log(airport_iaat, "hi ");
+		})
+		.catch((error) => console.log(error));
+
+	const return_val = {
+		airport_iaat: airport_iaat,
+	};
+
+	res.json(return_val);
+});
+
 module.exports = router;
-
-
-

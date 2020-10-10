@@ -1,6 +1,12 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Card, CardContent, CardActions, Button } from "@material-ui/core";
+import {
+	Card,
+	CardContent,
+	CardActions,
+	Button,
+	Grid,
+} from "@material-ui/core";
 
 const useStyles = (theme) => ({
 	root: {
@@ -22,16 +28,18 @@ class FlightCardInner extends React.Component {
 			departureTime,
 		} = this.props;
 		return (
-			<Card className={classes.root}>
-				<CardContent>
-					<h2>American Airlines Flight {flightNumber}</h2>
-					<h3>Depature {departureTime}</h3>
-					<h3>Arrival {arrivalTime}</h3>
-					<p></p>
-					<p></p>
-				</CardContent>
-				<CardActions>{this.renderButtons()}</CardActions>
-			</Card>
+			<Grid item xs={12} sm={6} md={4}>
+				<Card className={classes.root}>
+					<CardContent>
+						<h2>American Airlines Flight {flightNumber}</h2>
+						<h3>Depature {departureTime}</h3>
+						<h3>Arrival {arrivalTime}</h3>
+						<p></p>
+						<p></p>
+					</CardContent>
+					<CardActions>{this.renderButtons()}</CardActions>
+				</Card>
+			</Grid>
 		);
 	}
 }

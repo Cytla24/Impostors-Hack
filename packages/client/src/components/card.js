@@ -1,8 +1,12 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Card, CardContent, CardActions, Button } from "@material-ui/core";
-import Grid from '@material-ui/core/Grid';
-
+import {
+	Card,
+	CardContent,
+	CardActions,
+	Button,
+	Grid,
+} from "@material-ui/core";
 
 const useStyles = (theme) => ({
 	root: {
@@ -11,38 +15,57 @@ const useStyles = (theme) => ({
 });
 
 const styles = {
-fullHeightCard: {
-    height: "100%",
-    },
-}
+	fullHeightCard: {
+		height: "100%",
+	},
+};
 
 class CardInner extends React.Component {
+	constructor() {
+		super();
+		this.state = {};
+		this.handlePay = this.handlePay.bind(this);
+	}
+
+	handlePay() {
+		window.open("http://localhost:5000/pay");
+	}
+
+	// handleFligh
 	renderButtons = () => {
-		const buttons = [<Button key="more">Offset Carbon Footprint</Button>];
+		const buttons = [
+			<Button key="pay" onClick={this.handlePay}>
+				Offset Carbon Footprint
+			</Button>,
+			this.props.mode == "Flight" ? (
+				<Button key="pay">
+					<a href="/flights/lax/ord">Find Flights</a>
+				</Button>
+			) : null,
+		];
 		return buttons;
 	};
 
 	render() {
 		const { classes, origin, destination, mode, time, cf } = this.props;
-		const arrow = "   =>  ";
+		// const classes = useStyles();
+		const arrow = " : ";
 		return (
-			<Grid container alignItems="stretch">
-			  <Grid item style={{display: 'flex'}}>
-			    <Card style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
-			      <CardContent>
-					<h2>
-						{origin}
-						{arrow}
-						{destination}
-					</h2>
-					<h3>By {mode}</h3>
-					<p>{time}</p>
-					<p>Carbon Footprint: {cf}</p>
-				</CardContent>
-				<CardActions>{this.renderButtons()}</CardActions>
-			    </Card>
-			  </Grid>
-			 </Grid>
+			<Grid item xs={12} sm={6} md={4}>
+				<Card className={classes.root}>
+					<CardContent>
+						<h3>
+							{origin}
+							{arrow}
+							{destination}
+						</h3>
+						<h3>By {mode}</h3>
+						<p>{time}</p>
+						<p>Carbon Footprint: {cf}</p>
+					</CardContent>
+					<CardActions>{this.renderButtons()}</CardActions>
+				</Card>
+			</Grid>
 		);
 	}
 }
