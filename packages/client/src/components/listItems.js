@@ -9,62 +9,60 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import CardTravelIcon from '@material-ui/icons/CardTravel';
+import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
+import FastfoodIcon from '@material-ui/icons/Fastfood';
+import LiveHelpIcon from '@material-ui/icons/LiveHelp';
+import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 
 export const mainListItems = (
   <div>
-    <ListItem button>
+    <ListItem button component="a" href="/dashboard">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/plantrips">
       <ListItemIcon>
-        <ShoppingCartIcon />
+        <CardTravelIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <ListItemText primary="Trip Routes" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/flights">
       <ListItemIcon>
-        <PeopleIcon />
+        <AirplanemodeActiveIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Flights" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/foodfootprint">
       <ListItemIcon>
-        <BarChartIcon />
+        <FastfoodIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
+      <ListItemText primary="Food" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
+    <ListItem>
+      
     </ListItem>
   </div>
 );
 
 export const secondaryListItems = (
   <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
+    
     <ListItem button>
       <ListItemIcon>
-        <AssignmentIcon />
+        <LiveHelpIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="FAQ" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <AssignmentIcon />
+        <VideoLabelIcon />
       </ListItemIcon>
-      <ListItemText primary="Last quarter" />
+      <ListItemText primary="Demo" />
     </ListItem>
     <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
     </ListItem>
   </div>
 );

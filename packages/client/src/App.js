@@ -12,6 +12,7 @@ class App extends Component {
 			<div>
 			<Router>
 				<Switch>
+					<Route path="/foodfootprint" exact component={FoodFootPrint} />
 					<Route path="/dashboard" exact component={Dashboard} />
 					<Route path="/plantrips" exact component={SearchBar} />
 					<Route

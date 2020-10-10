@@ -27,7 +27,6 @@ export default function Deposits() {
       </Typography>
       <div>
         <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
         </Link>
       </div>
     </React.Fragment>
