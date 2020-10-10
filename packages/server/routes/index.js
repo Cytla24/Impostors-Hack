@@ -13,7 +13,7 @@ router.get("/", (req, res, next) => {
 });
 /* GET Food carbon footprint score. */
 router.get("/convertImage", function (req, res, next) {
-	
+	const { image } = req.query;
 	var req = unirest("POST", "https://microsoft-computer-vision3.p.rapidapi.com/tag");
 
 	req.query({
@@ -30,21 +30,54 @@ router.get("/convertImage", function (req, res, next) {
 
 	req.type("json");
 	req.send({
-		"url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Sirloin_Steak_with_Fries.jpg/800px-Sirloin_Steak_with_Fries.jpg"
+		"url": `${image}`
 	});
-	req.end(function (res) {
-		if (res.error) throw new Error(res.error);
+	req.end(function (response) {
+		if (response.error) throw new Error(response.error);
 		
-		var image_details_classes = res.body;
+		var image_details_classes = response.body;
 		var image_details = image_details_classes["tags"]
-		
-		var top_five_image_names = []
-		for (i = 0; i < 5; i++) {
-		  top_five_image_names.push(image_details[i]["name"]);
+		var food_dict = {
+			"pork": 1612,
+			"poultry": 2122,
+			"beef": 1212,
+			"lamb": 260,
+			"goat": 260,
+			"fish": 1729,
+			"eggs": 816,
+			"milk": 1277,
+			"cheese": 1277,
+			"wheat": 7155,
+			"rice": 2938,
+			"soybeans": 86,
+			"nuts": 414,
+			"fries": 122,
+			"potato": 101,
+			"oatmeal": 131,
+			"animal": 500,
+			"food": 300,
+			"plant": 250,
+			"bread": 400,
+			"cereal": 1000,
+			"fruit": 230
 		}
-		console.log(top_five_image_names);
-	});
+		var top_five_image_names = []
+		var top_five_image_carbon = 0
+		for (i = 0; i < 5; i++) {
+		  if (image_details[i]["name"].toLowerCase() in food_dict) {
+		  	top_five_image_carbon = top_five_image_carbon + food_dict[image_details[i]["name"]];
+		    top_five_image_names.push(image_details[i]["name"])
+		  } else {
+		  	top_five_image_carbon = top_five_image_carbon + 15;
+		  	top_five_image_names.push(image_details[i]["name"])
+		  }
+		 
+		}
+		
+		var returnJson = {"Names":top_five_image_names,"Carbon_footprint":top_five_image_carbon/5}
+		res.json(returnJson);
 
+	});
 
 });
 

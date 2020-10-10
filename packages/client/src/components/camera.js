@@ -19,13 +19,22 @@ const createObjects = function () {
     document.body.appendChild(canvas);
 }
 
+const dataURItoIMG = function (dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type:mime});
+}
+
 
 return {
     video: null,
     context: null,
     canvas: null,
 
-    startCamera: function (w = 680, h = 480) {
+    startCamera: function (w = 550, h = 380) {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             width = w;
             height = h;
@@ -49,7 +58,11 @@ return {
 
 
     takeSnapshot: function () {
-        this.context.drawImage(this.video, 0, 0, width, height);
+        this.context.drawImage(this.video, 50, 0, 150, 180);
+    },
+
+    canvasObject: function () {
+        return dataURItoIMG(this.canvas.toDataURL("image/png"));
     }
 
 }
