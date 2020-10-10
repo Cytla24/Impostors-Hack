@@ -72,10 +72,12 @@ function ResponsiveDrawer(props) {
       <Divider />
       <List>
         {['Plan Trips', 'Food'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <AirplanemodeActiveIcon /> : <FastfoodIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+          <a href={text == "Plan Trips" ? "/plantrips" : "/foodfootprint"} style={{textDecoration: 'inherit', color: 'inherit'}}>
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <AirplanemodeActiveIcon /> : <FastfoodIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          </a>
         ))}
       </List>
       <Divider />
