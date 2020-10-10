@@ -181,7 +181,7 @@ router.get("/getNearestCity", async (req, res, next) => {
 	// FIND iaat from name by searching csv file
 	// TEST
 
-	var airportObj = $.csv.toObjects(csv);
+	var airportObj = $.csv.toObjects(airports.txt);
 
 	for (var airport of airportObj){
 		var isSame = nearest_airport_name.localeCompare(airport.name);
