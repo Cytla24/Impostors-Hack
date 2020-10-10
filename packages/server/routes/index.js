@@ -1,11 +1,7 @@
-// import axios from "axios";
 var axios = require("axios");
 var express = require("express");
 var unirest = require("unirest");
 var router = express.Router();
-const { Client } = require("@googlemaps/google-maps-services-js");
-
-const client = new Client({});
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
@@ -83,7 +79,6 @@ router.get("/convertImage", function (req, res, next) {
 
 router.get("/getPaths", async (req, res, next) => {
 	const { origin, destination } = req.query;
-	// res.send({});
 	var driving_time,
 		rail_time,
 		flight_time,
@@ -95,32 +90,48 @@ router.get("/getPaths", async (req, res, next) => {
 	// Examples of origin = "Boston,MA" or "Concord,MA"
 	const API_KEY = "AIzaSyA7ly7P0GNHtWO-wfAR5DWrsE8qDyb_OgA";
 	var url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin}&destinations=${destination}&key=${API_KEY}`;
-	await axios.get(url).then(({ data }) => {
-		driving_time = data.rows[0].elements[0].duration.text;
-		origin_ad = data.origin_addresses[0];
-		destination_ad = data.destination_addresses[0];
-		distance = data.rows[0].elements[0].distance.text;
-		distance_val = data.rows[0].elements[0].distance.value;
-	});
+	await axios
+		.get(url)
+		.then(({ data }) => {
+			driving_time = data.rows[0].elements[0].duration.text || null;
+			origin_ad = data.origin_addresses[0];
+			destination_ad = data.destination_addresses[0];
+			distance = data.rows[0].elements[0].distance.text;
+			distance_val = data.rows[0].elements[0].distance.value;
+		})
+		.catch((error) => console.log(error));
 
-	url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin}&destinations=${destination}&transmit_mode=rail&key=${API_KEY}`;
-	await axios.get(url).then(({ data }) => {
-		console.log(data);
-		rail_time = data.rows[0].elements[0].duration.text;
-	});
+	url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin}&destinations=${destination}&mode=transit&transmit_mode=rail&key=${API_KEY}`;
+	await axios
+		.get(url)
+		.then(({ data }) => {
+			rail_time = data.rows[0].elements[0].duration.text;
+		})
+		.catch((error) => console.log(error));
 
 	const mtomilesConv = 1609.344;
+	const distance_val_mil = distance_val / mtomilesConv;
 	var avg_speed = 500; // mph
-	flight_time = Number((distance_val / mtomilesConv / avg_speed).toFixed(1));
+	flight_time = Number((distance_val_mil / avg_speed).toFixed(1));
 	flight_time_str = `${flight_time} hours`;
 
+	var car_cf, rail_cf, flight_cf;
+	const carRate = 0.4 / 1000; // tons/mile
+	const railRate = 0.06 / 1000;
+	const flightRate = 1.2 / 1000;
+	car_cf = Number((carRate * distance_val_mil).toFixed(2));
+	rail_cf = Number((railRate * distance_val_mil).toFixed(2));
+	flight_cf = Number((flightRate * distance_val_mil).toFixed(2));
 	const returnVal = {
-		distance: distance,
+		distance,
 		destination: destination_ad,
 		origin: origin_ad,
-		driving_time: driving_time,
-		rail_time: rail_time,
+		driving_time,
+		rail_time,
 		flight_time: flight_time_str,
+		car_cf,
+		rail_cf,
+		flight_cf,
 	};
 
 	res.json(returnVal);

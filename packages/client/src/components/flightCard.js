@@ -8,26 +8,27 @@ const useStyles = (theme) => ({
 	},
 });
 
-class CardInner extends React.Component {
+class FlightCardInner extends React.Component {
 	renderButtons = () => {
-		const buttons = [<Button key="more">Offset Carbon Footprint</Button>];
+		const buttons = [<Button key="more">Purchase</Button>];
 		return buttons;
 	};
 
 	render() {
-		const { classes, origin, destination, mode, time, cf } = this.props;
-		const arrow = "   =>  ";
+		const {
+			classes,
+			flightNumber,
+			arrivalTime,
+			departureTime,
+		} = this.props;
 		return (
 			<Card className={classes.root}>
 				<CardContent>
-					<h2>
-						{origin}
-						{arrow}
-						{destination}
-					</h2>
-					<h3>By {mode}</h3>
-					<p>{time}</p>
-					<p>Carbon Footprint: {cf}</p>
+					<h2>American Airlines Flight {flightNumber}</h2>
+					<h3>Depature {departureTime}</h3>
+					<h3>Arrival {arrivalTime}</h3>
+					<p></p>
+					<p></p>
 				</CardContent>
 				<CardActions>{this.renderButtons()}</CardActions>
 			</Card>
@@ -35,4 +36,4 @@ class CardInner extends React.Component {
 	}
 }
 
-export const MyCard = withStyles(useStyles)(CardInner);
+export const FlightCard = withStyles(useStyles)(FlightCardInner);
