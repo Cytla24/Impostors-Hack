@@ -17,25 +17,25 @@ import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 
 export const mainListItems = (
   <div>
-    <ListItem button>
+    <ListItem button component="a" href="/dashboard">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/plantrips">
       <ListItemIcon>
         <CardTravelIcon />
       </ListItemIcon>
       <ListItemText primary="Trip Routes" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/flights">
       <ListItemIcon>
         <AirplanemodeActiveIcon />
       </ListItemIcon>
       <ListItemText primary="Flights" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/foodfootprint">
       <ListItemIcon>
         <FastfoodIcon />
       </ListItemIcon>
