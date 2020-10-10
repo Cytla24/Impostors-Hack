@@ -28,7 +28,7 @@ class CardInner extends React.Component {
 	}
 
 	handlePay() {
-		window.open("http://localhost:5000/pay");
+		window.open("http://localhost:9000");
 	}
 
 	// handleFligh
