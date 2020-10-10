@@ -1,12 +1,20 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Card, CardContent, CardActions, Button } from "@material-ui/core";
+import Grid from '@material-ui/core/Grid';
+
 
 const useStyles = (theme) => ({
 	root: {
 		maxWidth: 700,
 	},
 });
+
+const styles = {
+fullHeightCard: {
+    height: "100%",
+    },
+}
 
 class CardInner extends React.Component {
 	renderButtons = () => {
@@ -18,8 +26,10 @@ class CardInner extends React.Component {
 		const { classes, origin, destination, mode, time, cf } = this.props;
 		const arrow = "   =>  ";
 		return (
-			<Card className={classes.root}>
-				<CardContent>
+			<Grid container alignItems="stretch">
+			  <Grid item style={{display: 'flex'}}>
+			    <Card style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
+			      <CardContent>
 					<h2>
 						{origin}
 						{arrow}
@@ -30,7 +40,9 @@ class CardInner extends React.Component {
 					<p>Carbon Footprint: {cf}</p>
 				</CardContent>
 				<CardActions>{this.renderButtons()}</CardActions>
-			</Card>
+			    </Card>
+			  </Grid>
+			 </Grid>
 		);
 	}
 }

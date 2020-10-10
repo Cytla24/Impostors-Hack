@@ -3,13 +3,16 @@ import { SearchBar } from "./components/searchbar";
 import { FoodFootPrint } from "./components/foodFootprint";
 import Flights from "./Flights";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import ResponsiveDrawer from "./components/sidebar";
 
 class App extends Component {
 	render() {
 		return (
+			<div>
+			<ResponsiveDrawer/>
 			<Router>
 				<Switch>
-					<Route path="/" exact component={SearchBar} />
+					<Route path="/plantrips" exact component={SearchBar} />
 					<Route path="/foodfootprint" exact component={FoodFootPrint} />
 					<Route
 						path="/flights/:origin/:destination"
@@ -18,6 +21,7 @@ class App extends Component {
 					/>
 				</Switch>
 			</Router>
+			</div>
 		);
 	}
 }

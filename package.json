@@ -15,9 +15,11 @@
 	],
 	"dependencies": {
 		"@googlemaps/google-maps-services-js": "^3.1.13",
+		"@material-ui/core": "^4.11.0",
+		"@material-ui/icons": "^4.9.1",
 		"axios": "^0.19.2",
 		"concurrently": "4.1.0",
-		"@material-ui/core": "^4.11.0"
+		"material-ui": "^0.20.2"
 	},
 	"devDependencies": {},
 	"proxy": "http://localhost:9000"

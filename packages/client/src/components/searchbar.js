@@ -90,10 +90,14 @@ class SearchBarInner extends React.Component {
 
 	renderButtons = () => {
 		const buttons = [
-			<Button key="submit-button" type="submit">
+			<Button key="submit-button" type="submit"
+			style={{display: 'inline-block',marginLeft: '10px',marginTop:'30px'}}
+			>
 				Submit
 			</Button>,
-			<Button key="reset-button" type="reset">
+			<Button key="reset-button" type="reset"
+			style={{display: 'inline-block',marginLeft: '10px',marginTop:'30px'}}
+			>
 				Reset
 			</Button>,
 		];
@@ -104,12 +108,14 @@ class SearchBarInner extends React.Component {
 		const { classes } = this.props;
 		const { cardsData } = this.state;
 		return (
+			<div>
 			<form
 				className={classes.root}
 				onReset={this.handleReset}
 				onSubmit={this.handleSubmit}
 				noValidate
 				autoComplete="off"
+				style={{display: 'inline-block',marginLeft: '300px',marginTop:'125px'}}
 			>
 				<TextField
 					id="origin"
@@ -124,8 +130,12 @@ class SearchBarInner extends React.Component {
 					onChange={this.handleChange}
 				/>
 				{this.renderButtons()}
+				<div>
 				<Cards cardsData={cardsData} />
+				</div>
 			</form>
+			</div>
+
 		);
 	}
 }
