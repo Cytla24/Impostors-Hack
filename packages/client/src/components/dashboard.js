@@ -151,6 +151,12 @@ export default function Dashboard() {
 					<Box pt={4}>
 						<Copyright />
 					</Box>
+					<p>
+						Data is gotten from Mongoose data base and used to
+						populate the dashboard. As more people pay to offset
+						carbon emissions, their data is added to the database
+						and thus changing the dashboard
+					</p>
 				</Container>
 			</main>
 		</div>
