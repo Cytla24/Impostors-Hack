@@ -36,7 +36,11 @@ class Flights extends Component {
 		return (
 			<div>
 				<h1>Flights</h1>
-				<Grid container>{this.renderCards()}</Grid>
+				{this.state.flights[0] ? (
+					<Grid container>{this.renderCards()}</Grid>
+				) : (
+					<p>Loading...</p>
+				)}
 			</div>
 		);
 	}

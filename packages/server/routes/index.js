@@ -196,4 +196,53 @@ router.get("/getNearestCity", async (req, res, next) => {
 	res.json(return_val);
 });
 
+const mongoose = require("mongoose");
+
+mongoose.connect(
+	"mongodb+srv://salvatore90:salvatore90@mycluster.chkrx.mongodb.net/myDb?retryWrites=true&w=majority",
+	{ useNewUrlParser: true, useUnifiedTopology: true },
+	() => {
+		console.log("Connected to database successfully!");
+	}
+);
+
+const mySchema = mongoose.Schema({
+	name: {
+		type: String,
+		required: true,
+	},
+	price: {
+		type: Number,
+		required: true,
+	},
+	description: {
+		type: String,
+		required: true,
+	},
+	ingredients: {
+		type: String,
+		required: true,
+	},
+});
+
+const myModel = mongoose.model("FoodDb", mySchema);
+
+router.post("/addDb", (req, res) => {
+	const { name, price } = req.query;
+	const post = new myModel({
+		name,
+		price,
+	});
+	post.save()
+		.then((data) => res.json(data))
+		.catch((error) => res.send(error));
+});
+
+router.get("/getDb", (req, res) => {
+	myModel
+		.find()
+		.then((data) => res.json(data))
+		.catch((error) => res.send(error));
+});
+
 module.exports = router;

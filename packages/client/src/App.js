@@ -9,7 +9,7 @@ import Dashboard from "./components/dashboard";
 class App extends Component {
 	constructor() {
 		super();
-		this.state = { appname: "Dashboard" };
+		this.state = { appname: "Carbon is SUS" };
 		this.changeName = this.changeName.bind(this);
 	}
 
