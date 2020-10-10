@@ -4,7 +4,7 @@ import { Card, CardContent, CardActions, Button } from "@material-ui/core";
 
 const useStyles = (theme) => ({
 	root: {
-		maxWidth: 345,
+		maxWidth: 700,
 	},
 });
 
@@ -15,8 +15,8 @@ class CardInner extends React.Component {
 	};
 
 	render() {
-		const { classes, origin, destination, mode, time } = this.props;
-		const arrow = "=>";
+		const { classes, origin, destination, mode, time, cf } = this.props;
+		const arrow = "   =>  ";
 		return (
 			<Card className={classes.root}>
 				<CardContent>
@@ -27,6 +27,7 @@ class CardInner extends React.Component {
 					</h2>
 					<h3>By {mode}</h3>
 					<p>{time}</p>
+					<p>Carbon Footprint: {cf}</p>
 				</CardContent>
 				<CardActions>{this.renderButtons()}</CardActions>
 			</Card>
