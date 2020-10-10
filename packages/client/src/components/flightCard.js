@@ -16,10 +16,16 @@ const useStyles = (theme) => ({
 
 class FlightCardInner extends React.Component {
 	renderButtons = () => {
-		const buttons = [<Button key="more">Purchase</Button>];
+		const buttons = [
+			<Button key="more" onClick={this.handlePay}>
+				Purchase
+			</Button>,
+		];
 		return buttons;
 	};
-
+	handlePay() {
+		window.open("http://localhost:9000");
+	}
 	render() {
 		const {
 			classes,
