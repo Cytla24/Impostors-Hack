@@ -13,7 +13,6 @@ class App extends Component {
 			<Router>
 				<Switch>
 					<Route path="/plantrips" exact component={SearchBar} />
-					<Route path="/foodfootprint" exact component={FoodFootPrint} />
 					<Route
 						path="/flights/:origin/:destination"
 						exact

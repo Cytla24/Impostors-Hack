@@ -71,10 +71,10 @@ function ResponsiveDrawer(props) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {['Plan Trips', 'Food'].map((text, index) => (
+        {['Plan Trips'].map((text, index) => (
           <a href={text == "Plan Trips" ? "/plantrips" : "/foodfootprint"} style={{textDecoration: 'inherit', color: 'inherit'}}>
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <AirplanemodeActiveIcon /> : <FastfoodIcon />}</ListItemIcon>
+              <ListItemIcon><AirplanemodeActiveIcon /> </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           </a>
