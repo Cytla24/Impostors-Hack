@@ -4,30 +4,27 @@ import { Card, CardContent, CardActions, Button } from "@material-ui/core";
 
 const useStyles = (theme) => ({
 	root: {
-		maxWidth: 700,
+		maxWidth: 345,
 	},
 });
 
-class CardInner extends React.Component {
+class FoodCardInner extends React.Component {
 	renderButtons = () => {
 		const buttons = [<Button key="more">Offset Carbon Footprint</Button>];
 		return buttons;
 	};
 
 	render() {
-		const { classes, origin, destination, mode, time, cf } = this.props;
-		const arrow = "   =>  ";
+		const { classes, names, carbon_footprint } = this.props;
 		return (
 			<Card className={classes.root}>
 				<CardContent>
 					<h2>
-						{origin}
-						{arrow}
-						{destination}
+						{names.join(",")}
+						<br/><br/>
+						Estimated Carbon Footprint of food in Grams: {carbon_footprint}
 					</h2>
-					<h3>By {mode}</h3>
-					<p>{time}</p>
-					<p>Carbon Footprint: {cf}</p>
+					
 				</CardContent>
 				<CardActions>{this.renderButtons()}</CardActions>
 			</Card>
@@ -35,4 +32,4 @@ class CardInner extends React.Component {
 	}
 }
 
-export const MyCard = withStyles(useStyles)(CardInner);
+export const FoodCard = withStyles(useStyles)(FoodCardInner);

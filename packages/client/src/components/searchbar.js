@@ -25,9 +25,9 @@ class SearchBarInner extends React.Component {
 
 	async handleSubmit(event) {
 		event.preventDefault();
-		const proxy = "/getPaths";
+		const url = "/getPaths";
 		const response = await axios
-			.get(`${proxy}`, {
+			.get(`${url}`, {
 				params: {
 					origin: this.state.origin,
 					destination: this.state.dest,
@@ -37,23 +37,47 @@ class SearchBarInner extends React.Component {
 				alert(`something went wrong :(`);
 				console.log(error);
 			});
-		const {
-			data: {
-				origin,
-				destination,
-				distance,
-				driving_time,
-				rail_time,
-				flight_time,
-			},
-		} = response;
-		console.log(response);
-		const cardsData = [
-			{ origin, destination, mode: "Flight", time: flight_time },
-			{ origin, destination, mode: "Rail", time: rail_time },
-			{ origin, destination, mode: "Car", time: driving_time },
-		];
-		this.setState({ cardsData });
+		if (response.status === 200) {
+			const {
+				data: {
+					origin,
+					destination,
+					driving_time,
+					rail_time,
+					flight_time,
+					car_cf,
+					rail_cf,
+					flight_cf,
+				},
+			} = response;
+			// console.log(response);
+			const cardsData = [
+				{
+					origin,
+					destination,
+					mode: "Flight",
+					time: flight_time,
+					cf: flight_cf,
+				},
+				{
+					origin,
+					destination,
+					mode: "Rail",
+					time: rail_time,
+					cf: rail_cf,
+				},
+				{
+					origin,
+					destination,
+					mode: "Car",
+					time: driving_time,
+					cf: car_cf,
+				},
+			];
+			this.setState({ cardsData });
+		} else {
+			alert("Something went wrong :( ");
+		}
 	}
 
 	handleChange(event) {
@@ -61,7 +85,7 @@ class SearchBarInner extends React.Component {
 	}
 
 	handleReset() {
-		this.setState({ value: "" });
+		this.setState({ origin: "", dest: "" });
 	}
 
 	renderButtons = () => {
