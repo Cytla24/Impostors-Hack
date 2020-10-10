@@ -90,7 +90,6 @@ class SearchBarInner extends React.Component {
 					flight_cf,
 				},
 			} = response;
-			// console.log(response);
 			const cardsData = [
 				{
 					origin,
@@ -130,10 +129,26 @@ class SearchBarInner extends React.Component {
 
 	renderButtons = () => {
 		const buttons = [
-			<Button key="submit-button" type="submit">
+			<Button
+				key="submit-button"
+				type="submit"
+				style={{
+					display: "inline-block",
+					marginLeft: "10px",
+					marginTop: "30px",
+				}}
+			>
 				Submit
 			</Button>,
-			<Button key="reset-button" type="reset">
+			<Button
+				key="reset-button"
+				type="reset"
+				style={{
+					display: "inline-block",
+					marginLeft: "10px",
+					marginTop: "30px",
+				}}
+			>
 				Reset
 			</Button>,
 		];

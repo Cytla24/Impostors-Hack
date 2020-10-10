@@ -14,6 +14,12 @@ const useStyles = (theme) => ({
 	},
 });
 
+const styles = {
+	fullHeightCard: {
+		height: "100%",
+	},
+};
+
 class CardInner extends React.Component {
 	constructor() {
 		super();
